@@ -13,15 +13,11 @@ import pandas as pd
 def GetCenterData(resultData, address, name, number):
     # json 파일을 파이썬 객체로 읽기
     tempData = json.loads(resultData)
-
     # json 파일을 DataFrame으로 변환
     tempData_df = pd.DataFrame(tempData['data'])
-
     # 키 값으로 주소/센터명/번호 값 추출하여 데이터프레임 형태로 h_result에 저장
-    #h_result = tempData_df[[str(address), str(name), str(number)]]
-    h_result = tempData_df[[address, name, number]]
-
-    return [h_result]
+    c_result = tempData_df[[str(address), str(name), str(number)]]
+    return [c_result]
 
 '''
     위치 데이터 정제 함수 (위도/경도 추출)
