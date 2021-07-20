@@ -23,21 +23,6 @@ def Main():
 
     print(jsonCleaningData3)
 
-    '''
-    with open('%s_GoVData_%s.json' % ('병원6', '데이터'), 'w', encoding='utf-8') as filedata:
- 
-        print(type(jsonDataResult3))
-        rJson = json.dumps( jsonDataResult3,
-                            indent=4, 
-                            sort_keys=True, 
-                            ensure_ascii=False)
-      
-        
-        filedata.write(jsonDataResult3)
-    
-    print('파일이름 : %s_GoVData_%s.json 저장완료' % ('병원6', '데이터'))
-    '''
-    
 if __name__ == '__main__':
     Main()
 
