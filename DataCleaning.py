@@ -13,11 +13,11 @@ import pandas as pd
 def GetCenterData(resultData, address, name, number):
     # json 파일을 파이썬 객체로 읽기
     tempData = json.loads(resultData)
-    # json 파일을 DataFrame으로 변환
-    tempData_df = pd.DataFrame(tempData['data'])
-    # 키 값으로 주소/센터명/번호 값 추출하여 데이터프레임 형태로 h_result에 저장
-    c_result = tempData_df[[str(address), str(name), str(number)]]
-    return [c_result]
+    # json 파일의 data 키값 데이터를 DataFrame 형태로 저장
+    tempResult = pd.DataFrame(tempData['data'])
+    # 키 값으로 주소/센터명/번호 값 추출하여 DataFrame 형태로 저장
+    centerResult = tempResult[[str(address), str(name), str(number)]]
+    return [centerResult]
 
 '''
     위치 데이터 정제 함수 (위도/경도 추출)
@@ -26,6 +26,8 @@ def GetCenterData(resultData, address, name, number):
          DataCleaning.GetGeoLocationData(tempData)
 '''
 def GetGeoLocationData(tempData):
-    xdata = tempData['addresses'][0]['x']
-    ydata = tempData['addresses'][0]['y']
-    return [ydata, xdata]
+    # addresses 키 값의 x 값 출력
+    xData = tempData['addresses'][0]['x']
+    # addresses 키 값의 y 값 출력
+    yData = tempData['addresses'][0]['y']
+    return [yData, xData]
