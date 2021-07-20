@@ -11,11 +11,9 @@ def Main():
     jsonSearchResult = GetGoVSearchResult(endPoint, pageData, perPageData, keyValue) #공공기관 예방접종센터
     jsonSearchResult2 = GetGoVSearchResult(endPoint2, pageData, perPageData, keyValue) #사설기관 예방접종센터
 
-    for data in jsonSearchResult['data']:  #'data' 에서 센터주소,센터명,센터전화번호를 가져옴
-        jsonCleaningData=GetCenterData(jsonSearchResult, "address", "centerName", "phoneNumber")
-
-    for data in jsonSearchResult2['data']:
-        jsonCleaningData2=GetCenterData(jsonSearchResult2, "orgZipaddr", "orgnm", "orgTlno")
+      #'data' 에서 센터주소,센터명,센터전화번호를 가져옴
+    jsonCleaningData=GetCenterData(jsonSearchResult, "address", "centerName", "phoneNumber")
+    jsonCleaningData2=GetCenterData(jsonSearchResult2, "orgZipaddr", "orgnm", "orgTlno")
     
     jsonCleaningData3=jsonCleaningData+jsonCleaningData2  #합침
 
