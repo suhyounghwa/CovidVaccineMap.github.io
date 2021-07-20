@@ -11,10 +11,8 @@ import pandas as pd
          DataCleaning.GetCenterData(resultData, "orgZipaddr", "orgnm", "orgTlno")
 '''
 def GetCenterData(resultData, address, name, number):
-    # json 파일을 파이썬 객체로 읽기
-    tempData = json.loads(resultData)
     # json 파일의 data 키값 데이터를 DataFrame 형태로 저장
-    tempResult = pd.DataFrame(tempData['data'])
+    tempResult = pd.DataFrame(resultData['data'])
     # 키 값으로 주소/센터명/번호 값 추출하여 DataFrame 형태로 저장
     centerResult = tempResult[[str(address), str(name), str(number)]]
     return [centerResult]
