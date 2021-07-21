@@ -16,36 +16,13 @@ def GetCenterData(resultData, addr, name, num, city):
     # 주소/센터명/번호만 추출하여 DataFrame 형태로 저장
     tempResult = tempResult[[str(addr), str(name), str(num)]]
     # 컬럼 확인 후 입력한 지역명의 데이터만 저장
-
-    #centerAddr, centerName, centerNum = GetSeparationData(tempResult,
-    #                                                        address,
-    #                                                        city,
-    #                                                        name,
-    #                                                        number)
-
     if str(addr) in tempResult.columns:
         centerResult = tempResult[tempResult[str(addr)].str.contains(city)]
         centerAddr = centerResult[str(addr)].values
         centerName = centerResult[str(name)].values
         centerNum = centerResult[str(num)].values
-#    return [centerAddr, centerName, centerNum]
-    return [centerAddr, centerName, centerNum]
 
-'''
-    백신접종 센터 데이터 정제 함수 (주소/센터명/전화번호 분리)
-    tempResult - 분리할 DataFrame 데이터
-    address - DataFrame 주소 변수 명
-    city : 입력한 지역 이름
-    name - DataFrame 센터명 변수 명
-    num - DataFrame 전화번호 변수 명
-'''
-#def GetSeparationData(tempResult, addr, city, name, num):
-#    if str(addr) in tempResult.columns:
-#        centerResult = tempResult[tempResult[str(addr)].str.contains(city)]
-#        centerAddr = centerResult[str(addr)].values
-#        centerName = centerResult[str(name)].values
-#        centerNum = centerResult[str(num)].values
-#    return [centerAddr, centerName, centerNum]
+    return [centerAddr, centerName, centerNum]
 
 '''
     위치 데이터 정제 함수 (위도/경도 추출)
