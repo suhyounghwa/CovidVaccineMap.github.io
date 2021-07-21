@@ -10,16 +10,26 @@ import pandas as pd
     Main에서의 함수 호출 예 
          DataCleaning.GetCenterData(resultData, "orgZipaddr", "orgnm", "orgTlno", "서울특별시")
 '''
-def GetCenterData(resultData, address, name, number, cityData):
+def GetCenterData(resultData, address, name, number, city):
     # json 파일의 data 키값 데이터를 DataFrame 형태로 저장
     tempResult = pd.DataFrame(resultData['data'])
     # 키 값으로 주소/센터명/번호 값 추출하여 DataFrame 형태로 저장
-    centerResult = tempResult[[str(address), str(name), str(number)]]
-    if 'address' in centerResult.columns:
-        cityResult = centerResult[centerResult['address'].str.contains(cityData)]
-    if 'orgZipaddr' in centerResult.columns:
-        cityResult = centerResult[centerResult['orgZipaddr'].str.contains(cityData)]
-    return [cityResult]
+    tempResult = tempResult[[str(address), str(name), str(number)]]
+    # 컬럼 확인 후 입력한 지역명의 데이터만 저장
+    if 'address' in tempResult.columns:
+        centerResult = tempResult[tempResult['address'].str.contains(city)]
+        centerAddr = centerResult['address'].values
+        centerName = centerResult['centerName'].values
+        centerNum = centerResult['phoneNumber'].values
+    if 'orgZipaddr' in tempResult.columns:
+        centerResult = tempResult[tempResult['orgZipaddr'].str.contains(city)]
+        centerAddr = centerResult['orgZipaddr'].values
+        centerName = centerResult['orgnm'].values
+        centerNum = centerResult['orgTlno'].values
+
+    return [centerAddr, centerName, centerNum]
+
+#def GetEachData(resultData, address, name, number, city):
 
 '''
     위치 데이터 정제 함수 (위도/경도 추출)
