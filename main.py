@@ -1,7 +1,8 @@
-from naverDataMap import *
+#from naverDataMap import *
 from DataCrawling import *
 from DataCleaning import *
 import pandas as pd
+import folium
 
 
 
@@ -11,22 +12,22 @@ def Main():
     endPoint2 = "https://api.odcloud.kr/api/apnmOrg/v1/list?"
      
     pageData = 1
-    perPageData2 = 20
-    perPageData = 10
+    perPageData = 284
+    perPageData2 = 10000
   
-    jsonSearchResult = GetGoVSearchResult(endPoint, pageData, perPageData2, keyValue) #공공기관 예방접종센터
-    jsonSearchResult2 = GetGoVSearchResult(endPoint2, pageData, perPageData, keyValue) #사설기관 예방접종센터
+    jsonSearchResult = GetGoVSearchResult(endPoint, pageData, perPageData, keyValue) #공공기관 예방접종센터
+    jsonSearchResult2 = GetGoVSearchResult(endPoint2, pageData, perPageData2, keyValue) #사설기관 예방접종센터
 
     #"서울특별시"에 있는 센터주소,센터명,센터전화번호를 가져옴
-    #jsonCleaningData=GetCenterData(jsonSearchResult, "address","centerName","phoneNumber","서울특별시")
-    #jsonCleaningData2=GetCenterData(jsonSearchResult2,"orgZipaddr","orgnm","orgTlno","서울특별시")
     addr, name, num, lat, lng= GetCenterData(jsonSearchResult, "address","centerName","phoneNumber","lat","lng","서울특별시")
     addr2, name2, num2, lat2, lng2 = GetCenterData(jsonSearchResult2,"orgZipaddr","orgnm","orgTlno",None,None,"서울특별시")
     
     # 센터주소, 센터명, 센터전화번호 데이터를 이용하여 데이터프레임 생성 
     jsonCleaningData = pd.DataFrame(data=list(zip(addr, name, num, lat, lng)), columns = ['Addr', 'name', 'num','lat','lng'])    
     jsonCleaningData2 = pd.DataFrame(data=list(zip(addr2, name2, num2)), columns = ['Addr', 'name', 'num']) 
-    #jsonCleaningData3= jsonCleaningData+jsonCleaningData2  #합침
+
+    jsonCleaningData3= pd.concat([jsonCleaningData,jsonCleaningData2])
+
     i=0
     map_data = folium.Map([37.56595045963169, 126.98918361888224],zoom_start=12)
     
