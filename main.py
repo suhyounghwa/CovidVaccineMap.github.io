@@ -11,8 +11,8 @@ def Main():
     endPoint2 = "https://api.odcloud.kr/api/apnmOrg/v1/list?"
      
     pageData = 1
-    perPageData = 284
-    perPageData2 = 15000
+    perPageData2 = 20
+    perPageData = 10
   
     jsonSearchResult = GetGoVSearchResult(endPoint, pageData, perPageData2, keyValue) #공공기관 예방접종센터
     jsonSearchResult2 = GetGoVSearchResult(endPoint2, pageData, perPageData, keyValue) #사설기관 예방접종센터
@@ -37,7 +37,8 @@ def Main():
       i=i+1
     i=0
     for x in jsonCleaningData2['Addr']:
-      Location=GetGeoLocationData(x)
+      LocationData=GetGeoLocationData(x)
+      Location=GetLngLatData(LocationData)
       marker= folium.Marker(Location, popup=jsonCleaningData2['num'][i], tooltip=jsonCleaningData2['name'][i],icon=folium.Icon(color="red"))
       marker.add_to(map_data)
       i=i+1  
