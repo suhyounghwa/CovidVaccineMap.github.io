@@ -4,7 +4,7 @@ from DataCrawling import *
 from DataCleaning import *
 import pandas as pd
 import folium
-
+import math
 
 
 def Main():
@@ -14,9 +14,9 @@ def Main():
     endPoint2 = "https://api.odcloud.kr/api/apnmOrg/v1/list?"
      
     pageData = 1
-    perPageData = 100
-    perPageData2 = 100
-  
+    perPageData = 1000
+    perPageData2 = 1000
+
     jsonSearchResult = GetGoVSearchResult(endPoint, pageData, perPageData, keyValue) #공공기관 예방접종센터
     jsonSearchResult2 = GetGoVSearchResult(endPoint2, pageData, perPageData2, keyValue) #사설기관 예방접종센터
 
@@ -29,15 +29,14 @@ def Main():
     jsonCleaningData2 = pd.DataFrame(data=list(zip(addr2, name2, num2)), columns = ['Addr', 'name', 'num']) 
 
     jsonCleaningData3= jsonCleaningData.append(jsonCleaningData2,ignore_index=True)
-    #print(jsonCleaningData3)
-    inputCenterName=input("센터이름 입력 :")
-
+    print("정제끝")
     i=0
+    inputCenterName=input("센터이름 입력 :")
     for x in jsonCleaningData3['name']:   
       if (x==str(inputCenterName)):        
-        if jsonCleaningData3['lat'][i] !=NaN:
+        if  math.isnan(float(jsonCleaningData3['lat'][i])):
           Location=GetLngLatData(GetGeoLocationData(jsonCleaningData3['Addr'][i]))
-          map_data=folium.Map(Location,zoom_start=12)
+          map_data=folium.Map(Location,tzoom_start=12)
           marker= folium.Marker(Location, popup=jsonCleaningData3['num'][i], tooltip=jsonCleaningData3['name'][i],icon=folium.Icon(color="red"))
         else:
           Location=[jsonCleaningData3['lat'][i],jsonCleaningData3['lng'][i]]
@@ -50,24 +49,24 @@ def Main():
         break
       i=i+1
     
-    ''' 마커출력
-    map_data = folium.Map([37.56595045963169, 126.98918361888224],zoom_start=12)
-    for x in jsonCleaningData['Addr']:
-      Location=[jsonCleaningData['lat'][i],jsonCleaningData['lng'][i]]
-      marker= folium.Marker(Location,color='blue' ,popup=jsonCleaningData['num'][i], tooltip=jsonCleaningData['name'][i],icon=folium.Icon(color="green"))
-      marker.add_to(map_data)
-      i=i+1
+'''
     i=0
-    for x in jsonCleaningData2['Addr']:
-      LocationData=GetGeoLocationData(x)
-      Location=GetLngLatData(LocationData)
-      marker= folium.Marker(Location, popup=jsonCleaningData2['num'][i], tooltip=jsonCleaningData2['name'][i],icon=folium.Icon(color="red"))
-      marker.add_to(map_data)
-      i=i+1
-      
-    map_data.save(r'c:\module1\navermap2.html')
-    print("[%s] 저장 성공 : " % datetime.datetime.now())
+    map_data = folium.Map([37.56595045963169, 126.98918361888224],zoom_start=12)
 
-    '''
+    for x in jsonCleaningData3['Addr']:        
+        if math.isnan(float(jsonCleaningData3['lat'][i])):
+          Location=GetLngLatData(GetGeoLocationData(jsonCleaningData3['Addr'][i]))
+          marker= folium.Marker(Location, popup=jsonCleaningData3['num'][i], tooltip=jsonCleaningData3['name'][i],icon=folium.Icon(color="red"))
+          marker.add_to(map_data)
+        else:
+          Location=[jsonCleaningData3['lat'][i],jsonCleaningData3['lng'][i]]
+          marker= folium.Marker(Location,color='blue' ,popup=jsonCleaningData3['num'][i], tooltip=jsonCleaningData3['name'][i],icon=folium.Icon(color="green")) 
+          marker.add_to(map_data)
+        i=i+1
+    map_data.save(r'c:\module1\navermap4.html')
+  
+    print("[%s] 저장 성공 : " % datetime.datetime.now())
+'''
+    
 if __name__ == '__main__':
     Main()
