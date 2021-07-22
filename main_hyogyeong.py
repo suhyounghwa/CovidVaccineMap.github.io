@@ -11,8 +11,8 @@ def Main():
     endPoint2 = "https://api.odcloud.kr/api/apnmOrg/v1/list?"
      
     pageData = 0
-    perPageData = 284
-    perPageData2 = 10000
+    perPageData = 100
+    perPageData2 = 100
   
     jsonSearchResult = GetGoVSearchResult(endPoint, pageData, perPageData, keyValue) #공공기관 예방접종센터
     jsonSearchResult2 = GetGoVSearchResult(endPoint2, pageData, perPageData2, keyValue) #사설기관 예방접종센터
@@ -24,11 +24,11 @@ def Main():
     # 센터주소, 센터명, 센터전화번호 데이터를 이용하여 데이터프레임 생성 
     jsonCleaningData = pd.DataFrame(data=list(zip(addr, name, num, lat, lng)), columns = ['Addr', 'name', 'num','lat','lng'])    
     jsonCleaningData2 = pd.DataFrame(data=list(zip(addr2, name2, num2)), columns = ['Addr', 'name', 'num']) 
-    jsonCleaningData3= pd.concat([jsonCleaningData,jsonCleaningData2])
+    jsonCleaningData3= jsonCleaningData.append(jsonCleaningData2,ignore_index=True)
+    print(jsonCleaningData3)
 
     # 사용자 입력 받기
-    print ("병원 이름을 입력하세요 : ")
-    userInput = input()
+    userInput= input("병원 이름을 입력하세요 : ")
 
     # 센터명을 포함하는 행 추출
     centerResult = jsonCleaningData3[jsonCleaningData3['name'].str.contains(userInput)]
@@ -36,22 +36,26 @@ def Main():
     centerLat = centerResult['lat'].values
     centerLng = centerResult['lng'].values
 
+    
+
     # 만약 위도/경도가 NaN일 경우 위도/경도 함수 이용
     if(pd.isna(centerLat)) :
         centerAddr = centerResult['Addr'].values
-        LocationData=GetGeoLocationData(str(centerAddr))
+        centerAddr = centerAddr[0]
+        print(centerAddr)
+        LocationData=GetGeoLocationData(centerAddr)
         centerLocation=GetLngLatData(LocationData)
     else: 
         centerLocation = [centerLat, centerLng]
+        
 
     # 좌표 찍기
     map_data = folium.Map(location=centerLocation, zoom_start=15)
-    map_data = folium.Marker(centerLocation, popup='확인', tooltip='확인').add_to(map_data)
+    map_data = folium.Marker(centerLocation, popup='확인', tooltip=centerResult['name'].values).add_to(map_data)
     map_data.save(r'c:\module1\navermap_hyogeong.html')
     print("맵 표시 완료")
     
     '''
-
     i=0
     map_data = folium.Map([37.56595045963169, 126.98918361888224],zoom_start=12)
     
