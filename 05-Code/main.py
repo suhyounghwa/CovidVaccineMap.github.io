@@ -2,10 +2,8 @@ from DataCrawling import *
 from DataCleaning import *
 import pandas as pd
 import folium
-import time
 
 def Main():
-    start = time.time()
 
     keyValue = "&serviceKey=SVAIOlt%2FwZYCMlBnNwQY0KF1QgscYyBeOzrRxwAlFGGNXwxR4I5vGO4LNfv7VvkPb%2B%2BI6q0Rk26GaRQzOI1wew%3D%3D"
     endPoint = "https://api.odcloud.kr/api/15077586/v1/centers?"
@@ -38,10 +36,9 @@ def Main():
       marker= folium.Marker(Location, popup=jsonCleaningData2['num'][i], tooltip=jsonCleaningData2['name'][i],icon=folium.Icon(color="red"))
       marker.add_to(map_data)
 
-    map_data.save(r'c:\module1\navermap4.html')
+    map_data.save(r'c:\module1\googlemap.html')
   
     print("[%s] 저장 성공 : " % datetime.datetime.now())
-    print("time:",time.time()-start)#전체 걸리는 시간을 초로 나타낸 것
 
 if __name__ == '__main__':
     Main()

@@ -1,4 +1,3 @@
-#from naverDataMap import *
 from numpy import NaN
 from DataCrawling import *
 from DataCleaning import *
@@ -52,28 +51,8 @@ def Main():
     # 좌표 찍기
     map_data = folium.Map(location=centerLocation, zoom_start=15)
     map_data = folium.Marker(centerLocation, popup='확인', tooltip=centerResult['name'].values).add_to(map_data)
-    map_data.save(r'c:\module1\navermap_hyogeong.html')
+    map_data.save(r'c:\module1\googlemap_input.html')
     print("맵 표시 완료")
-    
-    '''
-    i=0
-    map_data = folium.Map([37.56595045963169, 126.98918361888224],zoom_start=12)
-    
-    for x in jsonCleaningData['Addr']:
-      Location=[jsonCleaningData['lat'][i],jsonCleaningData['lng'][i]]
-      marker= folium.Marker(Location,color='blue' ,popup=jsonCleaningData['num'][i], tooltip=jsonCleaningData['name'][i],icon=folium.Icon(color="green"))
-      marker.add_to(map_data)
-      i=i+1
-    i=0
-    for x in jsonCleaningData2['Addr']:
-      LocationData=GetGeoLocationData(x)
-      Location=GetLngLatData(LocationData)
-      marker= folium.Marker(Location, popup=jsonCleaningData2['num'][i], tooltip=jsonCleaningData2['name'][i],icon=folium.Icon(color="red"))
-      marker.add_to(map_data)
-      i=i+1  
-    map_data.save(r'c:\module1\navermap2.html')
-    print("[%s] 저장 성공 : " % datetime.datetime.now())
-    '''
 
 if __name__ == '__main__':
     Main()
