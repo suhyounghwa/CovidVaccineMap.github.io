@@ -2,7 +2,6 @@ from DataCrawling import *
 from DataCleaning import *
 import pandas as pd
 import folium
-import time
 
 def Main():
     keyValue = "&serviceKey=SVAIOlt%2FwZYCMlBnNwQY0KF1QgscYyBeOzrRxwAlFGGNXwxR4I5vGO4LNfv7VvkPb%2B%2BI6q0Rk26GaRQzOI1wew%3D%3D"
@@ -34,8 +33,6 @@ def Main():
       marker.add_to(map_data)
       
     map_data.save(r'.\googlemap.html')
-  
-    print("[%s] 저장 성공 : " % datetime.datetime.now())
   
 
 if __name__ == '__main__':
