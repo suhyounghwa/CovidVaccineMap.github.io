@@ -5,7 +5,6 @@ import folium
 import time
 
 def Main():
-    print("[%s] 저장 성공 : " % datetime.datetime.now())
     keyValue = "&serviceKey=SVAIOlt%2FwZYCMlBnNwQY0KF1QgscYyBeOzrRxwAlFGGNXwxR4I5vGO4LNfv7VvkPb%2B%2BI6q0Rk26GaRQzOI1wew%3D%3D"
     endPoint = "https://api.odcloud.kr/api/15077586/v1/centers?"
     endPoint2 = "https://api.odcloud.kr/api/apnmOrg/v1/list?"
