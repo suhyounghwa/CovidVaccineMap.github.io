@@ -1,4 +1,3 @@
-from numpy import NaN
 from DataCrawling import *
 from DataCleaning import *
 import pandas as pd
@@ -18,39 +17,33 @@ def Main():
 
     #"서울특별시"에 있는 센터주소,센터명,센터전화번호를 가져옴
     addr, name, num, lat, lng= GetCenterData(jsonSearchResult, "address","centerName","phoneNumber","lat","lng","서울특별시")
-    addr2, name2, num2, lat2, lng2 = GetCenterData(jsonSearchResult2,"orgZipaddr","orgnm","orgTlno",None,None,"서울특별시")
+    addr2, name2, num2, location = GetCenterData(jsonSearchResult2,"orgZipaddr","orgnm","orgTlno",None,None,"서울특별시")
     
     # 센터주소, 센터명, 센터전화번호 데이터를 이용하여 데이터프레임 생성 
     jsonCleaningData = pd.DataFrame(data=list(zip(addr, name, num, lat, lng)), columns = ['Addr', 'name', 'num','lat','lng'])    
-    jsonCleaningData2 = pd.DataFrame(data=list(zip(addr2, name2, num2)), columns = ['Addr', 'name', 'num']) 
-    jsonCleaningData3= jsonCleaningData.append(jsonCleaningData2,ignore_index=True)
-    print(jsonCleaningData3)
+    jsonCleaningData2 = pd.DataFrame(data=list(zip(addr2, name2, num2, location)), columns = ['Addr', 'name', 'num','location'])
+    #jsonCleaningData3= jsonCleaningData.append(jsonCleaningData2,ignore_index=True)
+    print(jsonCleaningData, jsonCleaningData2)
 
     # 사용자 입력 받기
     userInput= input("병원 이름을 입력하세요 : ")
 
-    # 센터명을 포함하는 행 추출
-    centerResult = jsonCleaningData3[jsonCleaningData3['name'].str.contains(userInput)]
-    # 위도/경도 추출
-    centerLat = centerResult['lat'].values
-    centerLng = centerResult['lng'].values
-
-    
-
-    # 만약 위도/경도가 NaN일 경우 위도/경도 함수 이용
-    if(pd.isna(centerLat[0])) :
-        centerAddr = centerResult['Addr'].values
-        centerAddr = centerAddr[0]
-        print(centerAddr)
-        LocationData=GetGeoLocationData(centerAddr)
-        centerLocation=GetLngLatData(LocationData)
-    else: 
+    # 만약 공공 기관인 경우
+    if("코로나19" in userInput) :
+        # 센터명을 포함하는 행 추출
+        centerResult = jsonCleaningData[jsonCleaningData['name'].str.contains(userInput)]
+        # 위도/경도 추출
+        centerLat = centerResult['lat'].values
+        centerLng = centerResult['lng'].values
         centerLocation = [centerLat, centerLng]
-        
+    else: # 민간 기관인 경우
+        centerResult = jsonCleaningData2[jsonCleaningData2['name'].str.contains(userInput)]
+        centerLocation = centerResult['location'].values
+        centerLocation = centerLocation[0]
 
     # 좌표 찍기
     map_data = folium.Map(location=centerLocation, zoom_start=15)
-    map_data = folium.Marker(centerLocation, popup='확인', tooltip=centerResult['name'].values).add_to(map_data)
+    map_data = folium.Marker(centerLocation, tooltip=str(centerResult['name'].values)).add_to(map_data)
     map_data.save(r'.\googlemap_input.html')
     print("맵 표시 완료")
 
