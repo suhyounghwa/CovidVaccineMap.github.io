@@ -1,7 +1,7 @@
 import pandas as pd
 from DataCrawling import GetGeoLocationData
 import numpy as np
-
+import multiprocessing
 '''
     백신접종센터 데이터 정제 함수 (주소/센터명/전화번호/위도/경도 추출)
     resultData - 백신접종센터 JSON 데이터
@@ -25,18 +25,38 @@ def GetCenterData(resultData, addr, name, num, lat, lng, city):
     centerNum = centerResult[str(num)].values
     if(lat!=None):
         centerlng = centerResult[lng].values
-        centerlat = centerResult[lat].values    
+        centerlat = centerResult[lat].values
+        return [centerAddr, centerName, centerNum,centerlat,centerlng]    
     else:
         centerlng = []
         centerlat = []
-        for addrStr in centerAddr :
+        pool=multiprocessing.Pool(processes=multiprocessing.cpu_count())
+        centerData=pool.map(mtPr,centerAddr)
+        temp=0
+        '''
+        for addrStr in centerAddr:
             centerLocation = GetLngLatData(GetGeoLocationData(addrStr))
             centerlat.append(centerLocation[0])
             centerlng.append(centerLocation[1])
         #centerlat= None
         #centerlng=None
-    return [centerAddr, centerName, centerNum,centerlat,centerlng]
-
+        '''
+        return [centerAddr, centerName, centerNum,centerData]
+def mtPr(centerAddr):
+    center1=GetGeoLocationData(centerAddr)
+    if(center1==None):
+        return 0,0
+    centerLocation=GetLngLatData(center1)
+    '''
+    centerlng = []
+    centerlat = []
+    centerlat.append(centerLocation[0])
+    centerlng.append(centerLocation[1])
+    '''
+    centerlng=centerLocation[0]
+    centerlat=centerLocation[1]
+    
+    return [centerlng,centerlat]
 '''
     민간병원 데이터 정제 함수 (위도/경도 추출)
     LocationData - 위치 JSON 데이터 
