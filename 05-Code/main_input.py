@@ -10,8 +10,8 @@ def Main():
     endPoint2 = "https://api.odcloud.kr/api/apnmOrg/v1/list?"
      
     pageData = 0
-    perPageData = 100
-    perPageData2 = 100
+    perPageData = 248
+    perPageData2 = 10000
   
     jsonSearchResult = GetGoVSearchResult(endPoint, pageData, perPageData, keyValue) #공공기관 예방접종센터
     jsonSearchResult2 = GetGoVSearchResult(endPoint2, pageData, perPageData2, keyValue) #사설기관 예방접종센터

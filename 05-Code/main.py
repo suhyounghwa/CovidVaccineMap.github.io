@@ -9,7 +9,7 @@ def Main():
     endPoint = "https://api.odcloud.kr/api/15077586/v1/centers?"
     endPoint2 = "https://api.odcloud.kr/api/apnmOrg/v1/list?"
     pageData = 1
-    perPageData = 10000
+    perPageData = 248
     perPageData2 = 10000
     jsonSearchResult = GetGoVSearchResult(endPoint, pageData, perPageData, keyValue) #공공기관 예방접종센터
     jsonSearchResult2 = GetGoVSearchResult(endPoint2, pageData, perPageData2, keyValue) #사설기관 예방접종센터
@@ -33,7 +33,7 @@ def Main():
       marker= folium.Marker(Location[0],popup=jsonCleaningData2['num'][i], tooltip=jsonCleaningData2['name'][i],icon=folium.Icon(color="red"))
       marker.add_to(map_data)
       
-    map_data.save(r'c:\temp\navermap4.html')
+    map_data.save(r'.\googlemap.html')
   
     print("[%s] 저장 성공 : " % datetime.datetime.now())
   
