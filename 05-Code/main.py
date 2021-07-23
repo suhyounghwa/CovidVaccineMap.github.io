@@ -33,6 +33,7 @@ def Main():
       marker.add_to(map_data)
       
     map_data.save(r'.\googlemap.html')
+    print("저장성공")
   
 
 if __name__ == '__main__':
