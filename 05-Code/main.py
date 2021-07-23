@@ -38,7 +38,7 @@ def Main():
       marker= folium.Marker(Location, popup=jsonCleaningData2['num'][i], tooltip=jsonCleaningData2['name'][i],icon=folium.Icon(color="red"))
       marker.add_to(map_data)
 
-    map_data.save(r'c:\CovidVaccineMap.github.io\결과물\navermap4.html')
+    map_data.save(r'c:\module1\navermap4.html')
   
     print("[%s] 저장 성공 : " % datetime.datetime.now())
     print("time:",time.time()-start)#전체 걸리는 시간을 초로 나타낸 것
