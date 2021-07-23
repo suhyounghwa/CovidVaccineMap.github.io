@@ -5,15 +5,13 @@ import folium
 import time
 
 def Main():
-    start = time.time()
-    print("시작")
+    print("[%s] 저장 성공 : " % datetime.datetime.now())
     keyValue = "&serviceKey=SVAIOlt%2FwZYCMlBnNwQY0KF1QgscYyBeOzrRxwAlFGGNXwxR4I5vGO4LNfv7VvkPb%2B%2BI6q0Rk26GaRQzOI1wew%3D%3D"
     endPoint = "https://api.odcloud.kr/api/15077586/v1/centers?"
     endPoint2 = "https://api.odcloud.kr/api/apnmOrg/v1/list?"
     pageData = 1
-    perPageData = 284
+    perPageData = 10000
     perPageData2 = 10000
-
     jsonSearchResult = GetGoVSearchResult(endPoint, pageData, perPageData, keyValue) #공공기관 예방접종센터
     jsonSearchResult2 = GetGoVSearchResult(endPoint2, pageData, perPageData2, keyValue) #사설기관 예방접종센터
     
@@ -30,22 +28,16 @@ def Main():
     for i in range(0, len(jsonCleaningData)):
       Location=[jsonCleaningData['lat'][i],jsonCleaningData['lng'][i]]
       marker= folium.Marker(Location,popup=jsonCleaningData['num'][i], tooltip=jsonCleaningData['name'][i],icon=folium.Icon(color="green"))
-      marker.add_to(map_data)
-      
-    i=0
-    
+      marker.add_to(map_data)    
     for i in range(0, len(jsonCleaningData2)):
       Location=[jsonCleaningData2['location'][i]]
-      if(Location==[0,0]):
-        print("백제빌딩")
-      else:
-        marker= folium.Marker(Location[0],popup=jsonCleaningData2['num'][i], tooltip=jsonCleaningData2['name'][i],icon=folium.Icon(color="red"))
-        marker.add_to(map_data)
+      marker= folium.Marker(Location[0],popup=jsonCleaningData2['num'][i], tooltip=jsonCleaningData2['name'][i],icon=folium.Icon(color="red"))
+      marker.add_to(map_data)
       
     map_data.save(r'c:\temp\navermap4.html')
   
     print("[%s] 저장 성공 : " % datetime.datetime.now())
-    print("time:",time.time()-start)#전체 걸리는 시간을 초로 나타낸 것
+  
 
 if __name__ == '__main__':
     Main()

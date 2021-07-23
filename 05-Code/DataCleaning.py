@@ -32,7 +32,6 @@ def GetCenterData(resultData, addr, name, num, lat, lng, city):
         centerlat = []
         pool=multiprocessing.Pool(processes=multiprocessing.cpu_count())
         centerData=pool.map(mtPr,centerAddr)
-        temp=0
         '''
         for addrStr in centerAddr:
             centerLocation = GetLngLatData(GetGeoLocationData(addrStr))
@@ -44,15 +43,7 @@ def GetCenterData(resultData, addr, name, num, lat, lng, city):
         return [centerAddr, centerName, centerNum,centerData]
 def mtPr(centerAddr):
     center1=GetGeoLocationData(centerAddr)
-    if(center1==None):
-        return 0,0
     centerLocation=GetLngLatData(center1)
-    '''
-    centerlng = []
-    centerlat = []
-    centerlat.append(centerLocation[0])
-    centerlng.append(centerLocation[1])
-    '''
     centerlng=centerLocation[0]
     centerlat=centerLocation[1]
     
