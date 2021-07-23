@@ -1,10 +1,11 @@
-#from naverDataMap import *
-from numpy import NaN
 from DataCrawling import *
 from DataCleaning import *
 import pandas as pd
 import folium
+<<<<<<< HEAD
 import math
+=======
+>>>>>>> bc905bf806fd812b7fac1a88deb6bc25866ab07b
 import time
 
 def Main():
@@ -27,8 +28,9 @@ def Main():
     
     # 센터주소, 센터명, 센터전화번호 데이터를 이용하여 데이터프레임 생성 
     jsonCleaningData = pd.DataFrame(data=list(zip(addr, name, num, lat, lng)), columns = ['Addr', 'name', 'num','lat','lng'])    
-    jsonCleaningData2 = pd.DataFrame(data=list(zip(addr2, name2, num2)), columns = ['Addr', 'name', 'num']) 
+    jsonCleaningData2 = pd.DataFrame(data=list(zip(addr2, name2, num2, lat2, lng2)), columns = ['Addr', 'name', 'num','lat','lng'])     
 
+<<<<<<< HEAD
     jsonCleaningData3= jsonCleaningData.append(jsonCleaningData2,ignore_index=True)
     print("time:",time.time()-start)
     jsonCleaningData3.iloc[2245] = 0
@@ -70,6 +72,32 @@ def Main():
         i=i+1
         count += 1
         print(count)
+=======
+    #jsonCleaningData3= jsonCleaningData.append(jsonCleaningData2,ignore_index=True)
+    #print(jsonCleaningData3.iloc[2245])
+    #print("time:",time.time()-start)
+    #jsonCleaningData3.iloc[2245] = 0
+
+    #jsonCleaningData4 = jsonCleaningData3.drop(jsonCleaningData3.index[2245])
+    #print(jsonCleaningData3.head(2246))
+    #print("정제끝")
+    
+    map_data = folium.Map([37.56595045963169, 126.98918361888224],zoom_start=12)
+    #count = 0
+
+    for i in range(0, len(jsonCleaningData)):
+      Location=[jsonCleaningData['lat'][i],jsonCleaningData['lng'][i]]
+      marker= folium.Marker(Location,color='blue' ,popup=jsonCleaningData['num'][i], tooltip=jsonCleaningData['name'][i],icon=folium.Icon(color="green"))
+      marker.add_to(map_data)
+
+    for i in range(0, len(jsonCleaningData2)):
+      Location=[jsonCleaningData2['lat'][i],jsonCleaningData2['lng'][i]]
+      marker= folium.Marker(Location, popup=jsonCleaningData2['num'][i], tooltip=jsonCleaningData2['name'][i],icon=folium.Icon(color="red"))
+      marker.add_to(map_data)
+      #count += 1
+      #print(count)
+
+>>>>>>> bc905bf806fd812b7fac1a88deb6bc25866ab07b
     map_data.save(r'c:\module1\navermap4.html')
   
     print("[%s] 저장 성공 : " % datetime.datetime.now())
@@ -78,4 +106,8 @@ def Main():
 if __name__ == '__main__':
     Main()
 
+<<<<<<< HEAD
  
+=======
+ 
+>>>>>>> bc905bf806fd812b7fac1a88deb6bc25866ab07b
