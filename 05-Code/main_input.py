@@ -38,7 +38,7 @@ def Main():
     
 
     # 만약 위도/경도가 NaN일 경우 위도/경도 함수 이용
-    if(pd.isna(centerLat)) :
+    if(pd.isna(centerLat[0])) :
         centerAddr = centerResult['Addr'].values
         centerAddr = centerAddr[0]
         print(centerAddr)
@@ -51,7 +51,7 @@ def Main():
     # 좌표 찍기
     map_data = folium.Map(location=centerLocation, zoom_start=15)
     map_data = folium.Marker(centerLocation, popup='확인', tooltip=centerResult['name'].values).add_to(map_data)
-    map_data.save(r'c:\module1\googlemap_input.html')
+    map_data.save(r'.\googlemap_input.html')
     print("맵 표시 완료")
 
 if __name__ == '__main__':

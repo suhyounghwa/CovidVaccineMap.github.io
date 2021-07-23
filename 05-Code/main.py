@@ -36,7 +36,7 @@ def Main():
       marker= folium.Marker(Location, popup=jsonCleaningData2['num'][i], tooltip=jsonCleaningData2['name'][i],icon=folium.Icon(color="red"))
       marker.add_to(map_data)
 
-    map_data.save(r'c:\module1\googlemap.html')
+    map_data.save(r'.\googlemap.html')
   
     print("[%s] 저장 성공 : " % datetime.datetime.now())
 
